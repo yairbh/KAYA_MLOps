@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-def convert_target_to_binary(target):
+def convert_target_to_binary(target): #TODO add params for 2 target strings (defalut=None)
     # Handle common binary representations
     if target.dtype == 'object':
         mapping = {
