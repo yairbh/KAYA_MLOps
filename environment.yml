@@ -1,0 +1,8 @@
+name: kaya_mlops
+channels:
+  - defaults
+dependencies:
+  - conda-repo-cli=1.0.75
+  - conda-verify==3.4.2
+  - python=3.11
+  # more conda-specific packages...
