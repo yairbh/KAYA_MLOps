@@ -1,5 +1,5 @@
 from src.data.load_data import import_and_load_data, split_cleaned_data
-from src.features.build_features import preprocess_data, numerical_standartization
+from src.features.build_features import preprocess_data, numerical_standartization, get_high_correlated_features
 from src.models.train_model import xgbclf
 from src.visualization.visualize import get_roc, plot_featureImportance
 
@@ -14,6 +14,7 @@ target_column_name = 'classification'
 
 data = import_and_load_data(data_url, column_names)
 clean_data = preprocess_data(data, target_column_name)
+# clean_data = clean_data.drop(columns=get_high_correlated_features(clean_data, th=0.7), axis=1)
 X_train_clean, X_test_clean, y_train_clean, y_test_clean = split_cleaned_data(clean_data, target_column_name)
 X_train_clean_std, X_test_clean_std = numerical_standartization(X_train_clean, X_test_clean)
 

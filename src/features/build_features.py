@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import StandardScaler
 
 def convert_target_to_binary(target, yes=None, no=None):
@@ -77,3 +78,12 @@ def preprocess_data(data: pd.DataFrame, target_column_name):
     data[numerical_columns] = data[numerical_columns].apply(remove_outliers)
 
     return data
+
+def get_high_correlated_features(data, th=0.7):
+    corr_matrix = data.corr().abs()
+    # Create a mask where values >= threshold are True
+    mask = (corr_matrix >= th) & ~np.eye(corr_matrix.shape[0], dtype=bool)
+    # Apply the upper triangle mask
+    mask = np.triu(mask, k=1)
+    high_corr_cols = corr_matrix.columns[mask.any(axis=0)].tolist()
+    return high_corr_cols
