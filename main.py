@@ -17,7 +17,8 @@ clean_data = preprocess_data(data, target_column_name)
 X_train_clean, X_test_clean, y_train_clean, y_test_clean = split_cleaned_data(clean_data, target_column_name)
 X_train_clean_std, X_test_clean_std = numerical_standartization(X_train_clean, X_test_clean)
 
-params = {}
-model, y_pred_proba = xgbclf(params, X_train_clean, y_train_clean, X_test_clean, y_test_clean)
+params = {}  # Use default parameters
+model, y_pred_proba = xgbclf(params, X_train_clean_std, y_train_clean, X_test_clean_std, y_test_clean)
+
 get_roc(y_test_clean, y_pred_proba)
 plot_featureImportance(model, X_train_clean.columns)
