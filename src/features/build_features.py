@@ -79,7 +79,7 @@ def preprocess_data(data: pd.DataFrame, target_column_name):
 
     return data
 
-def get_high_correlated_features(data, th=0.7):
+def get_high_correlated_features(data, th=0.8):
     corr_matrix = data.corr().abs()
     # Create a mask where values >= threshold are True
     mask = (corr_matrix >= th) & ~np.eye(corr_matrix.shape[0], dtype=bool)
