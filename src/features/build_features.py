@@ -1,16 +1,24 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-def convert_target_to_binary(target): #TODO add params for 2 target strings (defalut=None)
+def convert_target_to_binary(target, yes=None, no=None):
+    # Handle binary representations set by the user
+    if yes is not None and no is not None:
+        mapping = {yes: 1, no: 0}
+
     # Handle common binary representations
-    if target.dtype == 'object':
+    elif target.dtype == 'object':
         mapping = {
             'yes': 1, 'no': 0,
             'true': 1, 'false': 0,
             'True': 1, 'False': 0,
             'Yes': 1, 'No': 0
         }
+    else: mapping = None
+
+    if mapping:
         target = target.map(mapping).fillna(target)
+
     unique_values = target.dropna().unique()
     if len(unique_values) != 2:
         raise ValueError("Target column must have exactly two unique values.")
