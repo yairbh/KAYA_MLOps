@@ -66,24 +66,11 @@ get_roc(y_test_clean, y_pred_proba, title="ROC Curve - Initial Model (Imbalanced
 if generate_plots:
     plot_featureImportance(initial_model, X_train_clean.columns)
 
-# 6. SHAP Feature Selection (Imbalanced Data)
-features_to_remove = shap_filter(pd.DataFrame(X_train_clean_std, columns=X_train_clean.columns), initial_model, importance_threshold=0.2)
-X_train_shap = pd.DataFrame(X_train_clean_std, columns=X_train_clean.columns).drop(columns=features_to_remove)
-X_test_shap = pd.DataFrame(X_test_clean_std, columns=X_test_clean.columns).drop(columns=features_to_remove)
-
-# 7. Retrain Model with Selected Features (Imbalanced Data)
-print("\nModel after SHAP Feature Selection (Imbalanced Data):")
-model_shap, y_pred_proba_shap = xgbclf(params2, X_train_shap.values, y_train_clean, X_test_shap.values, y_test_clean)
-shap_auc = roc_auc_score(y_test_clean, y_pred_proba_shap)
-get_roc(y_test_clean, y_pred_proba_shap, title="ROC Curve - SHAP Feature Selection (Imbalanced Data)")
-if generate_plots:
-    plot_featureImportance(model_shap, X_train_shap.columns)
-
-# 8. Data Balancing with SMOTE
+# 6. Data Balancing with SMOTE
 X_train_oversampled, y_train_oversampled, X_test_oversampled, y_test_oversampled = smote(clean_data, target_column_name)
 X_train_oversampled_std, X_test_oversampled_std = numerical_standartization(X_train_oversampled, X_test_oversampled)
 
-# 9. Model Training on Oversampled Data (Balanced Data)
+# 7. Model Training on Oversampled Data (Balanced Data)
 print("\nModel after SMOTE (Balanced Data):")
 model_smote, y_pred_proba_smote = xgbclf(params2, X_train_oversampled_std, y_train_oversampled, X_test_oversampled_std, y_test_oversampled)
 smote_auc = roc_auc_score(y_test_oversampled, y_pred_proba_smote)
@@ -91,14 +78,14 @@ get_roc(y_test_oversampled, y_pred_proba_smote, title="ROC Curve - SMOTE (Balanc
 if generate_plots:
     plot_featureImportance(model_smote, X_train_oversampled.columns, title='Feature Importance after SMOTE')
 
-# 10. SHAP Feature Selection on Oversampled Data (Balanced Data)
+# 8. SHAP Feature Selection on Oversampled Data (Balanced Data)
 X_train_oversampled_df = pd.DataFrame(X_train_oversampled_std, columns=X_train_oversampled.columns)
 X_test_oversampled_df = pd.DataFrame(X_test_oversampled_std, columns=X_test_oversampled.columns)
 features_to_remove_oversampled = shap_filter(X_train_oversampled_df, model_smote, importance_threshold=0.2)
 X_train_oversampled_shap = X_train_oversampled_df.drop(columns=features_to_remove_oversampled)
 X_test_oversampled_shap = X_test_oversampled_df.drop(columns=features_to_remove_oversampled)
 
-# 11. Retrain Model with Selected Features on Oversampled Data (Balanced Data)
+# 9. Retrain Model with Selected Features on Oversampled Data (Balanced Data)
 print("\nModel after SHAP Feature Selection (Balanced Data):")
 model_smote_shap, y_pred_proba_smote_shap = xgbclf(params2, X_train_oversampled_shap.values, y_train_oversampled, X_test_oversampled_shap.values, y_test_oversampled)
 smote_shap_auc = roc_auc_score(y_test_oversampled, y_pred_proba_smote_shap)
@@ -106,9 +93,8 @@ get_roc(y_test_oversampled, y_pred_proba_smote_shap, title="ROC Curve - SHAP Fea
 if generate_plots:
     plot_featureImportance(model_smote_shap, X_train_oversampled_shap.columns, title='Feature Importance after SHAP and SMOTE')
 
-# 12. Summary of Results
+# 10. Summary of Results
 print("\nSummary of Results:")
 print(f"Initial Model AUC (Imbalanced): {initial_auc:.4f}")
-print(f"SHAP-filtered Model AUC (Imbalanced): {shap_auc:.4f}")
 print(f"Model AUC after SMOTE (Balanced): {smote_auc:.4f}")
 print(f"SHAP-filtered Model AUC after SMOTE (Balanced): {smote_shap_auc:.4f}")
