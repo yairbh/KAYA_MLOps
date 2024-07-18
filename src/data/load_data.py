@@ -1,3 +1,7 @@
+"""
+Functions for loading data from a URL and splitting it into training and test sets.
+"""
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 

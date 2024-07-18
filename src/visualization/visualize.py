@@ -1,3 +1,7 @@
+"""
+Visualization functions for plotting ROC curves and feature importance.
+"""
+
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc
 import pandas as pd

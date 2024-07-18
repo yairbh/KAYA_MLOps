@@ -1,3 +1,8 @@
+"""
+Functions for preprocessing data, including converting target to binary, removing outliers,
+standardizing numerical features, and creating dummy variables for categorical features.
+"""
+
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 

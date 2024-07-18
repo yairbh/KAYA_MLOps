@@ -1,3 +1,7 @@
+"""
+Functions for evaluating model performance using cross-validation metrics.
+"""
+
 from sklearn.metrics import roc_curve, auc, cross_val_score
 
 def get_eval1(clf, X, y):

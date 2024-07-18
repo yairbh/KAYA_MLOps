@@ -1,3 +1,7 @@
+"""
+Functions for applying SHAP for feature selection and analysis.
+"""
+
 import shap
 import pandas as pd
 
