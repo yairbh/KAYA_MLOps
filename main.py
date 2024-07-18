@@ -1,5 +1,6 @@
 from src.data.load_data import import_and_load_data, split_cleaned_data
 from src.features.build_features import preprocess_data, numerical_standartization
+from src.features.SMOTE import show_distribution_of_labels, smote
 from src.models.train_model import xgbclf
 from src.visualization.visualize import get_roc, plot_featureImportance
 
@@ -14,6 +15,8 @@ target_column_name = 'classification'
 
 data = import_and_load_data(data_url, column_names)
 clean_data = preprocess_data(data, target_column_name)
+
+# Run on clean data (imbalanced)
 X_train_clean, X_test_clean, y_train_clean, y_test_clean = split_cleaned_data(clean_data, target_column_name)
 X_train_clean_std, X_test_clean_std = numerical_standartization(X_train_clean, X_test_clean)
 
@@ -21,4 +24,14 @@ params = {}  # Use default parameters
 model, y_pred_proba = xgbclf(params, X_train_clean_std, y_train_clean, X_test_clean_std, y_test_clean)
 
 get_roc(y_test_clean, y_pred_proba)
-plot_featureImportance(model, X_train_clean.columns)
+plot_featureImportance(model, X_train_clean_std.columns)
+
+# Run on oversampling data (balanced)
+X_train_oversampled, y_train_oversampled, X_test_smote, y_test_smote = smote(clean_data,target_column_name) #the last two variables are just made from the different split in smote func
+
+X_train_oversampled_std, X_test_oversampled_std = numerical_standartization(X_train_oversampled, X_test_smote)
+
+model_smote, y_pred_proba_smote = xgbclf(params, X_train_oversampled_std, y_train_oversampled, X_test_oversampled_std, y_test_smote)
+
+get_roc(y_test_smote, y_pred_proba_smote)
+plot_featureImportance(model_smote, X_train_oversampled_std.columns, title='Feature Importance when oversampling')
