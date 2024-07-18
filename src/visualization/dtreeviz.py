@@ -10,8 +10,8 @@ import dtreeviz
 def dtreeviz_analysis(X_train_clean, y_train_clean, target_column_name, model, tree_index = 1,  class_names=[0, 1],
                       entire_tree = True, instance_to_query = None, nodes_to_query = None ):
   '''
-  this function recives the training data and target, a trained model and a class name (as a list ['no', 'yes'], default is [0,1]).
-  it returms a dtreeviz visualisation for the model.
+  this function receives the training data and target, a trained model and a class name (as a list ['no', 'yes'], default is [0,1]).
+  it returns a dtreeviz visualisation for the model.
   tree_index specifies which individual tree within the ensemble to visualize (tree_index = 1 is default).
   if entire_tree = True, it will return the entire tree (True is default).
   if nodes_to_query is a list of two int, it will also return this specific section of the tree (root is level 0).
