@@ -8,7 +8,7 @@ import pandas as pd
 def shap_filter(clean_data, model, importance_threshold=0.2):
     """
        This function receives the clean data (excluding the target column) and the trained model,
-       and returns a list of the least 20% important features. Threshold can be adjusted.
+       and returns a list of the least {importance_threshold}% important features. Threshold can be adjusted.
     """
     print(f"Shape of clean_data: {clean_data.shape}")
     explainer = shap.TreeExplainer(model)  # This is the trained model
