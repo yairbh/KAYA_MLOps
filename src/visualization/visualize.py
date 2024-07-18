@@ -1,9 +1,13 @@
+"""
+Visualization functions for plotting ROC curves and feature importance.
+"""
+
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc
 import pandas as pd
 
 
-def get_roc(y_test, y_pred):
+def get_roc(y_test, y_pred, title='Receiver operating characteristic'):
     fpr, tpr, _ = roc_curve(y_test, y_pred)
     roc_auc = auc(fpr, tpr)
 
@@ -15,15 +19,15 @@ def get_roc(y_test, y_pred):
     plt.ylim([0.0, 1.0])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('Receiver operating characteristic')
+    plt.title(title)
     plt.legend(loc="upper left")
     plt.show()
     return
 
 
-def plot_featureImportance(model, keys, title='Feature Importance'):
+def plot_featureImportance(model, feature_names, title='Feature Importance'):
     importances = model.feature_importances_
-    importance_frame = pd.DataFrame({'Importance': list(importances), 'Feature': list(keys)})
+    importance_frame = pd.DataFrame({'Importance': importances, 'Feature': feature_names})
     importance_frame.sort_values(by='Importance', inplace=True)
     importance_frame.tail(10).plot(kind='barh', x='Feature', figsize=(8, 8), color='orange')
     plt.xlabel('Importance')

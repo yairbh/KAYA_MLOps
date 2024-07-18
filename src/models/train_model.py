@@ -1,3 +1,7 @@
+"""
+Functions for training XGBoost models and evaluating their performance on test data.
+"""
+
 import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
