@@ -21,7 +21,33 @@ X_train_clean, X_test_clean, y_train_clean, y_test_clean = split_cleaned_data(cl
 X_train_clean_std, X_test_clean_std = numerical_standartization(X_train_clean, X_test_clean)
 
 params = {}  # Use default parameters
-model, y_pred_proba = xgbclf(params, X_train_clean_std, y_train_clean, X_test_clean_std, y_test_clean)
+params1={
+    'n_estimators':3000,
+    'objective': 'binary:logistic',
+    'learning_rate': 0.05,
+    'gamma':0.1,
+    'subsample':0.8,
+    'colsample_bytree':0.3,
+    'min_child_weight':3,
+    'max_depth':3,
+    #'seed':1024,
+    'n_jobs' : -1
+}
+
+params2={
+    'n_estimators':3000,
+    'objective': 'binary:logistic',
+    'learning_rate': 0.005,
+    #'gamma':0.01,
+    'subsample':0.555,
+    'colsample_bytree':0.7,
+    'min_child_weight':3,
+    'max_depth':8,
+    #'seed':1024,
+    'n_jobs' : -1
+}
+
+model, y_pred_proba = xgbclf(params2, X_train_clean_std, y_train_clean, X_test_clean_std, y_test_clean)
 
 get_roc(y_test_clean, y_pred_proba)
 plot_featureImportance(model, X_train_clean_std.columns)
@@ -31,7 +57,7 @@ X_train_oversampled, y_train_oversampled, X_test_smote, y_test_smote = smote(cle
 
 X_train_oversampled_std, X_test_oversampled_std = numerical_standartization(X_train_oversampled, X_test_smote)
 
-model_smote, y_pred_proba_smote = xgbclf(params, X_train_oversampled_std, y_train_oversampled, X_test_oversampled_std, y_test_smote)
+model_smote, y_pred_proba_smote = xgbclf(params2, X_train_oversampled_std, y_train_oversampled, X_test_oversampled_std, y_test_smote)
 
 get_roc(y_test_smote, y_pred_proba_smote)
 plot_featureImportance(model_smote, X_train_oversampled_std.columns, title='Feature Importance when oversampling')
