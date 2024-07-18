@@ -21,11 +21,11 @@ def get_roc(y_test, y_pred):
     return
 
 
-def plot_featureImportance(model, keys):
+def plot_featureImportance(model, keys, title='Feature Importance'):
     importances = model.feature_importances_
     importance_frame = pd.DataFrame({'Importance': list(importances), 'Feature': list(keys)})
     importance_frame.sort_values(by='Importance', inplace=True)
     importance_frame.tail(10).plot(kind='barh', x='Feature', figsize=(8, 8), color='orange')
     plt.xlabel('Importance')
-    plt.title('Feature Importance')
+    plt.title(title)
     plt.show()
